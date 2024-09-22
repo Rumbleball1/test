@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>連動MAP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        caption {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        /* スマートフォン向けのレスポンシブデザイン */
+        @media (max-width: 600px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th, td {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            tr {
+                margin-bottom: 15px;
+            }
+
+            th {
+                background-color: #f2f2f2;
+                position: sticky;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>連動MAP一覧</h1>
+    <table id="spreadsheetTable">
+        <thead>
+            <tr>
+                <th>連動</th>
+                <th>街銀行</th>
+                <th>古都周辺</th>
+                 <th>狩場(LV899まで)</th>
+                  <th>狩場(LV900～)</th>
+            </tr>
+            <tr>
+    <td style="border: solid 1px;">項目1</td>
+            </tr>
+            <tr>
+    <td style="border: solid 1px;">項目2</td>
+            </tr>
+            <tr>
+    <td style="border: solid 1px;">項目3</td>
+            </tr>
+            <tr>
+    <td style="border: solid 1px;">項目4</td>
+            </tr>
+            <tr>
+    <td style="border: solid 1px;">項目5</td>
+            </tr>
+            <tr>
+    <td style="border: solid 1px;">項目6</td>
+            </tr>
+            <tr>
+    <td style="border: solid 1px;">項目7</td>
+            </tr>
+            <tr>
+    <td style="border: solid 1px;">項目8</td>
+            </tr>
+            <tr>
+    <td style="border: solid 1px;">項目9</td>
+            </tr>
+            <tr> 
+    <td style="border: solid 1px;">項目10</td>
+            </tr>
+            <tr>
+    <td style="border: solid 1px;">項目11</td>
+            </tr>
+            <tr>
+    <td style="border: solid 1px;">項目12</td>
+            </tr>
+            <tr>
+        </thead>
+        <tbody>
+            <!-- ここにJavaScriptでJSONデータから行を追加します -->
+        </tbody>
+    </table>
+
+
+    <script>
+       // 'rendoumap.json' という名前のJSONファイルからデータを取得して表示
+        fetch('rendoumap.json')
+            .then(response => response.json())
+            .then(data => {
+                let tableBody = document.querySelector("#spreadsheetTable tbody");
+
+                data.forEach(row => {
+                    let tr = document.createElement("tr");
+                    Object.values(row).forEach(value => {
+                        let td = document.createElement("td");
+                        td.textContent = value;
+                        tr.appendChild(td);
+                    });
+                    tableBody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+
+        // 検索機能
+        function searchGroup() {
+            let input = document.getElementById('searchInput').value.toUpperCase();
+            let table = document.getElementById('groupTable');
+            let tr = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < tr.length; i++) { // ヘッダー行をスキップするためi=1から
+                let td = tr[i].getElementsByTagName('td')[0]; // グループ名の列
+                if (td) {
+                    let txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(input) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
